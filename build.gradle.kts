@@ -14,6 +14,13 @@ repositories {
     }
 }
 
+// 配置 Gradle 工具链自动下载 JDK 17
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 dependencies {
     intellijPlatform {
         intellijIdeaCommunity("2023.3")
