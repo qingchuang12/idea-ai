@@ -1,186 +1,42 @@
-```
-# Build system
-.gradle/
+.gradle
 build/
-target/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Dependencies
-lib/
-libs/
-vendor/
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+.qoder
+!**/src/main/**/out/
+!**/src/test/**/out/
 
-# Logs
-*.log
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
-# OS generated files
-.DS_Store
-Thumbs.db
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
-# IDE
-.idea/
+### VS Code ###
 .vscode/
-*.swp
-*.swo
 
-# Environment
-.env
-.env.local
-*.env.*
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-.git/
-.mypy_cache/
-.pytest_cache/
-.hypothesis/
-
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-node_modules/
-dist/
-build/
-.nyc_output
-coverage/
-.npm
-.yarn-integrity
-.yarn-metadata.json
-package-lock.json
-yarn.lock
-
-# Java
-*.class
-*.jar
-*.war
-*.ear
-*.nar
-hs_err_pid*
-
-# C/C++
-*.o
-*.a
-*.so
-*.dll
-*.dylib
-*.exe
-*.out
-*.obj
-
-# Go
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-*.test
-*.prof
-vendor/
-
-# Ruby
-*.gem
-*.rbc
-.bundle/
-vendor/bundle/
-.ruby-version
-.rbenv-vars
-.travis.yml
-appveyor.yml
-Gemfile.lock
-
-# Rust
-target/
-Cargo.lock
-
-# Web
-.sass-cache/
-.sass-cache
-public/system/
-public/uploads/
-*.min.js
-*.min.css
-
-# Archives
-*.zip
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.rar
-*.7z
-*.gz
-*.bz2
-*.xz
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-
-# Testing
-coverage/
-htmlcov/
-.coverage
-*.gcov
-*.lcov
-*.profraw
-*.profdata
-
-# Temporary files
-*.tmp
-*.temp
-*~
+### Mac OS ###
 .DS_Store
-Thumbs.db
-ehthumbs.db
-Icon?
-.directory
-*.nib
-*.db
-*.sql
-*.sqlite
-*.sqlite3
-*.fdb
-*.mdb
-*.accdb
-*.lock
-*.pid
-*.seed
-*.session
-*.dump
-*.core
-*.cache
-*.swp
-*.swo
-*~
-.\#*
-.\#*
-*.un~
-Session.vim
-.netrwhist
-*~
-.tags
-.ccls-cache/
-```
+# 项目排除路径
+/.intellijPlatform
