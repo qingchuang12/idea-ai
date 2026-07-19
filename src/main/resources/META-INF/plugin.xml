@@ -1,0 +1,60 @@
+<idea-plugin>
+    <id>com.aicopilot.ai-copilot</id>
+    <name>AI Copilot</name>
+    <version>1.0.0</version>
+    <vendor email="support@aicopilot.com" url="https://aicopilot.com">AI Copilot Team</vendor>
+
+    <description><![CDATA[
+    AI Copilot - An intelligent coding assistant plugin with multi-driver AI support.
+    
+    Features:
+    - Chat interface with Markdown rendering and code highlighting
+    - Web embedding support via JCEF
+    - Context management for files and selections
+    - Multiple AI driver modes (Native API, WebView, Local Ollama)
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends optional="true" config-file="jcef-config.xml">com.intellij.jcef</depends>
+
+    <!-- Tool Window -->
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="AI Copilot" anchor="right" factoryClass="com.aicopilot.ui.AIToolWindowFactory" icon="/icons/ai_icon.svg"/>
+        
+        <!-- Settings -->
+        <applicationService serviceImplementation="com.aicopilot.settings.AIApplicationSettings"/>
+        <applicationConfigurable parentId="tools" instance="com.aicopilot.settings.AIConfigurable" id="com.aicopilot.settings.AIConfigurable" displayName="AI Copilot"/>
+        
+        <!-- Persistent State -->
+        <applicationService serviceImplementation="com.aicopilot.settings.ChatHistoryState"/>
+    </extensions>
+
+    <!-- Actions -->
+    <actions>
+        <!-- Editor context menu action -->
+        <action id="com.aicopilot.actions.AddSelectionToChat" 
+                class="com.aicopilot.actions.AddSelectionToChatAction"
+                text="Add Selection to AI Chat"
+                description="Add selected text to AI chat context">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+        
+        <!-- Project view context menu action -->
+        <action id="com.aicopilot.actions.AddFileToContext"
+                class="com.aicopilot.actions.AddFileToContextAction"
+                text="Add File(s) to AI Context"
+                description="Add selected file(s) to AI chat context">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+        
+        <!-- New Chat Action -->
+        <action id="com.aicopilot.actions.NewChatAction"
+                class="com.aicopilot.actions.NewChatAction"
+                text="New Chat Session"
+                description="Start a new chat session"
+                icon="AllIcons.Actions.New">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
