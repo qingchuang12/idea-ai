@@ -8,6 +8,7 @@ group = "com.aicopilot"
 version = "1.0.0"
 
 repositories {
+    mavenLocal()
     mavenCentral()
     intellijPlatform {
         defaultRepositories()
@@ -23,11 +24,11 @@ java {
 
 dependencies {
     intellijPlatform {
-        intellijIdeaCommunity("2023.3")
+        local(providers.gradleProperty("platformLocalPath"))
         bundledPlugins(
             "com.intellij.java",
-            "Git4Idea",
-            "org.intellij.jcef"  // JCEF support
+            "Git4Idea"
+//            "org.intellij.jcef"  // JCEF support
         )
         instrumentationTools()
     }
@@ -61,16 +62,23 @@ intellijPlatform {
     publishing {
         token = providers.environmentVariable("PUBLISH_TOKEN").orNull
     }
+
+    pluginVerification {
+        ides {
+//            recommended()  --默认为最新版本
+            local(providers.gradleProperty("platformLocalPath"))
+        }
+    }
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "17"
+            jvmTarget = "21"
         }
     }
 }
