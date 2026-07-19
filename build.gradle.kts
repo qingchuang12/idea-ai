@@ -19,9 +19,9 @@ dependencies {
         intellijIdeaCommunity("2023.3")
         bundledPlugins(
             "com.intellij.java",
-            "Git4Idea"
+            "Git4Idea",
+            "org.intellij.jcef"  // JCEF support
         )
-        jcef("117.0.5938.62")
         instrumentationTools()
     }
 

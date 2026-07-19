@@ -1,34 +1,28 @@
 ```
-# Compiled and build artifacts
-*.class
-*.o
-*.obj
-*.out
+# Gradle
+.gradle/
 build/
-target/
+!gradle-wrapper.jar
 
 # Dependencies
-.gradle/
-libs/
+node_modules/
+vendor/bundle/
 
-# Logs and temp files
+# Logs
 *.log
-*.tmp
-*.swp
 
-# Environment
+# Environment specific
 .env
 .env.local
-*.env.*
+.env.*
 
-# Editors
+# IDE
 .vscode/
 .idea/
-*.iml
-*.iws
-*.ipr
+*.swp
+*.swo
 
-# System
+# OS
 .DS_Store
 Thumbs.db
 
@@ -37,15 +31,79 @@ coverage/
 htmlcov/
 .coverage
 
-# Python cache (if any Python files exist)
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.mypy_cache/
-.pytest_cache/
+.Python
+*.so
+*.egg-info/
+.eggs/
 
-# Compressed files
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.hprof
+hs_err_pid*
+
+# C/C++
+*.o
+*.a
+*.obj
+*.lib
+*.dll
+*.so
+*.dylib
+*.exe
+*.out
+*.ilk
+*.pdb
+*.sdf
+*.opendb
+*.aps
+*.ncb
+*.opt
+*.plg
+*.toc
+
+# Node
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ruby
+*.gem
+*.rbc
+.bundle/
+.config/
+vendor/cache/
+vendor/gems/
+vendor/ruby/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.prof
+
+# Rust
+target/
+*.lock
+
+# Temporary folders
+tmp/
+temp/
+.TemporaryItems
+.trash
+
+# Archives
 *.zip
 *.gz
 *.tar
