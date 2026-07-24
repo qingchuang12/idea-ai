@@ -1,10 +1,12 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.21"
-    id("org.jetbrains.intellij.platform") version "2.0.1"
+    id("org.jetbrains.kotlin.jvm") version "2.1.21"
+    id("org.jetbrains.intellij.platform") version "2.2.1"
 }
 
-group = "com.aicopilot"
+group = "com.aiCopilot"
 version = "1.0.0"
 
 repositories {
@@ -15,22 +17,17 @@ repositories {
     }
 }
 
-// 配置 Gradle 工具链自动下载 JDK 17
+// 配置 Gradle 工具链自动下载 JDK 21
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
 dependencies {
     intellijPlatform {
         local(providers.gradleProperty("platformLocalPath"))
-        bundledPlugins(
-            "com.intellij.java",
-            "Git4Idea"
-//            "org.intellij.jcef"  // JCEF support
-        )
-        instrumentationTools()
+        bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
     }
 
     // HTTP Client
@@ -77,8 +74,8 @@ kotlin {
 
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "21"
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 }
