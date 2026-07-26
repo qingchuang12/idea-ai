@@ -47,15 +47,12 @@ class AddSelectionToChatAction : AnAction() {
         val toolWindow = ToolWindowManager.getInstance(project).getToolWindow("AI Copilot")
         toolWindow?.show {
             // 查找 AIChatPanel 并刷新上下文列表
-            val content = toolWindow.contentManager.findContent("Chat")
-            content?.component?.let { component ->
-                if (component is AIChatPanel) {
-                    component.addContextItem(contextItem)
-                    component.refreshContextList()
-                    
-                    // 可选：自动切换到聊天页
-                    toolWindow.contentManager.setSelectedContent(content)
-                }
+            val panel = toolWindow.contentManager.contents
+                .mapNotNull { it.component as? AIChatPanel }
+                .firstOrNull()
+            panel?.let {
+                it.addContextItem(contextItem)
+                it.refreshContextList()
             }
         }
         

@@ -98,3 +98,32 @@ data class ApiResponse(
         val code: String?
     )
 }
+
+/**
+ * Agent 工具调用（由模型请求发起）。
+ */
+data class ToolCall(
+    val id: String,
+    val name: String,
+    val argumentsJson: String
+)
+
+/**
+ * 一次助手回合的结构化结果（内容 + 工具调用）。
+ */
+data class AssistantTurn(
+    val content: String?,
+    val toolCalls: List<ToolCall>
+)
+
+/**
+ * Agent 执行过程中的事件，用于 UI 可视化展示。
+ */
+sealed class AgentEvent {
+    data class Thinking(val text: String) : AgentEvent()
+    data class AssistantMessage(val text: String) : AgentEvent()
+    data class ToolInvoked(val call: ToolCall) : AgentEvent()
+    data class ToolFinished(val call: ToolCall, val ok: Boolean, val output: String) : AgentEvent()
+    data class Error(val message: String) : AgentEvent()
+    data class Finished(val finalText: String) : AgentEvent()
+}

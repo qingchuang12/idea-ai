@@ -2,25 +2,34 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.1.21"
-    id("org.jetbrains.intellij.platform") version "2.2.1"
+    alias(libs.plugins.kotlin) // Kotlin support
+    alias(libs.plugins.intelliJPlatform) // IntelliJ Platform Gradle Plugin
+    alias(libs.plugins.changelog) // Gradle Changelog Plugin
+    alias(libs.plugins.kover) // Gradle Kover Plugin
 }
 
-group = "com.aiCopilot"
-version = "1.0.0"
+group = providers.gradleProperty("pluginGroup").get()
+version = providers.gradleProperty("pluginVersion").get()
+
+// Set the JVM language level used to build the project.
+kotlin {
+    jvmToolchain(21)
+}
+
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21) // 替换为你的目标Java版本
+    }
+}
 
 repositories {
     mavenLocal()
     mavenCentral()
     intellijPlatform {
         defaultRepositories()
-    }
-}
-
-// 配置 Gradle 工具链自动下载 JDK 21
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
@@ -47,12 +56,24 @@ dependencies {
 }
 
 intellijPlatform {
+    // 禁用这些任务以避免构建问题
+    tasks {
+        named<org.jetbrains.intellij.platform.gradle.tasks.BuildSearchableOptionsTask>("buildSearchableOptions") {
+            enabled = false
+        }
+        named("prepareJarSearchableOptions") {
+            enabled = false
+        }
+        named("jarSearchableOptions") {
+            enabled = false
+        }
+    }
     pluginConfiguration {
-        name = "AI Copilot"
+        name = providers.gradleProperty("pluginName")
         version = project.version.toString()
         ideaVersion {
-            sinceBuild = "233"
-            untilBuild = "243.*"
+            sinceBuild = providers.gradleProperty("pluginSinceBuild")
+            untilBuild = providers.gradleProperty("pluginUntilBuild")
         }
     }
     

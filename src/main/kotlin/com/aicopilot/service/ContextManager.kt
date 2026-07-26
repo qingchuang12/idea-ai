@@ -5,6 +5,7 @@ import com.aicopilot.model.ContextType
 import com.aicopilot.settings.AIApplicationSettings
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import java.io.File
@@ -183,12 +184,11 @@ class ContextManager(private val project: Project) {
         )
         
         val extension = file.extension?.lowercase() ?: ""
-        return extension in textExtensions || file.fileType.isPlainText
+        return extension in textExtensions || file.fileType == PlainTextFileType.INSTANCE
     }
     
     companion object {
-        fun getInstance(project: Project): ContextManager {
-            return project.getService(ContextManager::class.java) ?: ContextManager(project)
-        }
+        fun getInstance(project: Project): ContextManager =
+            project.getService(ContextManager::class.java)
     }
 }

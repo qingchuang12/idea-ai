@@ -1,6 +1,6 @@
 <idea-plugin>
-    <id>com.aicopilot.ai-copilot</id>
-    <name>AI Copilot</name>
+    <id>com.aicopilot.ai-common</id>
+    <name>AI Common</name>
     <version>1.0.0</version>
     <vendor email="support@aicopilot.com" url="https://aicopilot.com">AI Copilot Team</vendor>
 
@@ -22,13 +22,58 @@
     <!-- Tool Window -->
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="AI Copilot" anchor="right" factoryClass="com.aicopilot.ui.AIToolWindowFactory" icon="/icons/ai_icon.svg"/>
+
+        <!-- Phase 3: Agent Task Board -->
+        <toolWindow id="AI Agent Board" anchor="bottom" secondary="true"
+                    factoryClass="com.aicopilot.ui.AgentBoardToolWindowFactory" icon="/icons/ai_icon.svg"/>
+
+        <!-- Phase 5/6: AI Knowledge (understanding + ecosystem) -->
+        <toolWindow id="AI Knowledge" anchor="bottom" secondary="true"
+                    factoryClass="com.aicopilot.ui.AIKnowledgeToolWindowFactory" icon="/icons/ai_icon.svg"/>
         
+
         <!-- Settings -->
         <applicationService serviceImplementation="com.aicopilot.settings.AIApplicationSettings"/>
         <applicationConfigurable parentId="tools" instance="com.aicopilot.settings.AIConfigurable" id="com.aicopilot.settings.AIConfigurable" displayName="AI Copilot"/>
+
+        <!-- Model Registry (BYOK) -->
+        <applicationService serviceImplementation="com.aicopilot.settings.ModelRegistry"/>
+
+        <!-- Agent Tool Registry -->
+        <applicationService serviceImplementation="com.aicopilot.service.agent.ToolRegistry"/>
+
+        <!-- Context Manager (per-project) -->
+        <projectService serviceImplementation="com.aicopilot.service.ContextManager"/>
         
+        <!-- Phase 5: Deep engineering understanding -->
+        <projectService serviceImplementation="com.aicopilot.service.understanding.CodeIndexService"/>
+        <applicationService serviceImplementation="com.aicopilot.service.understanding.KnowledgeBase"/>
+        <applicationService serviceImplementation="com.aicopilot.service.understanding.MemoryStore"/>
+
+        <!-- Bottom-right settings entry (status bar) -->
+        <statusBarWidgetFactory id="com.aicopilot.statusBarSettings"
+                            implementation="com.aicopilot.ui.AISettingsStatusBarFactory"/>
+
+        <!-- Phase 6: Open ecosystem -->
+        <projectService serviceImplementation="com.aicopilot.ecosystem.RulesLoader"/>
+        <applicationService serviceImplementation="com.aicopilot.ecosystem.SkillMarket"/>
+        <applicationService serviceImplementation="com.aicopilot.ecosystem.McpClient"/>
+
         <!-- Persistent State -->
         <applicationService serviceImplementation="com.aicopilot.settings.ChatHistoryState"/>
+
+
+        <!-- Phase 2: Inline code completion provider -->
+        <inline.completion.provider implementation="com.aicopilot.service.completion.AICodeCompletionProvider"/>
+
+        <!-- Phase 2: AI smart diagnostic inspection -->
+        <localInspection language="JAVA"
+                        shortName="AISmartDiagnostic"
+                        displayName="AI Smart Diagnostic"
+                        groupPath="AI Copilot"
+                        level="WARNING"
+                        enabledByDefault="true"
+                        implementationClass="com.aicopilot.service.diagnose.AIDiagnosticInspection"/>
     </extensions>
 
     <!-- Actions -->
@@ -56,6 +101,57 @@
                 description="Start a new chat session"
                 icon="AllIcons.Actions.New">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+
+        <!-- Phase 2: Productivity actions -->
+        <action id="com.aicopilot.TestGen"
+                class="com.aicopilot.service.review.TestGenAction"
+                text="Generate Unit Tests"
+                description="Use AI to generate unit tests for the current file">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="com.aicopilot.CodeReview"
+                class="com.aicopilot.service.review.CodeReviewAction"
+                text="Review Uncommitted Changes"
+                description="Use AI to review your uncommitted changes">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="com.aicopilot.CommitMessage"
+                class="com.aicopilot.service.review.CommitMessageAction"
+                text="Generate Commit Message"
+                description="Use AI to write a commit message from your changes">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="last"/>
+        </action>
+
+        <!-- Phase 5/6: understanding & ecosystem actions -->
+        <action id="com.aicopilot.IndexCodebase"
+                class="com.aicopilot.action.IndexCodebaseAction"
+                text="Index Codebase"
+                description="Build the AI code index for this project">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+
+        <action id="com.aicopilot.ReloadRules"
+                class="com.aicopilot.action.ReloadRulesAction"
+                text="Reload Project Rules"
+                description="Re-scan .rules files in the project">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+
+        <!-- Next Edit Suggestion (NES) -->
+        <action id="com.aicopilot.NextEditSuggestion"
+                class="com.aicopilot.action.AINesAction"
+                text="Next Edit Suggestion (NES)"
+                description="Predict the next edit at the cursor">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <keyboard-shortcut first-keystroke="alt shift N"/>
         </action>
     </actions>
 </idea-plugin>

@@ -50,15 +50,10 @@ class AddFileToContextAction : AnAction() {
         val toolWindow = ToolWindowManager.getInstance(project).getToolWindow("AI Copilot")
         toolWindow?.show {
             // 查找 AIChatPanel 并刷新上下文列表
-            val content = toolWindow.contentManager.findContent("Context")
-            content?.component?.let { component ->
-                if (component is AIChatPanel) {
-                    component.refreshContextList()
-                    
-                    // 可选：自动切换到上下文页
-                    toolWindow.contentManager.setSelectedContent(content)
-                }
-            }
+            toolWindow.contentManager.contents
+                .mapNotNull { it.component as? AIChatPanel }
+                .firstOrNull()
+                ?.refreshContextList()
         }
         
         val fileNames = addedItems.joinToString(", ") { it.displayName }

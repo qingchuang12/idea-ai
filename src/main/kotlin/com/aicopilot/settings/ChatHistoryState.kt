@@ -39,11 +39,35 @@ class ChatHistoryState : PersistentStateComponent<ChatHistoryState> {
         currentSessionId = session.id
         return session
     }
-    
+
     fun getCurrentSession(): ChatSession? {
         return currentSessionId?.let { id ->
             sessions.find { it.id == id }
         } ?: sessions.lastOrNull()
+    }
+
+    /** 获取当前会话，如无则创建 */
+    fun getOrCreateCurrentSession(): ChatSession {
+        return getCurrentSession() ?: createNewSession()
+    }
+
+    /** 向当前会话追加一条消息（会话标题若为默认则用首条用户消息更新） */
+    fun appendMessage(role: String, content: String, contextFiles: List<String> = emptyList()) {
+        val session = getOrCreateCurrentSession()
+        session.messages.add(ChatMessage(role = role, content = content, contextFiles = contextFiles))
+        session.updatedAt = System.currentTimeMillis()
+        if (session.title == "New Chat" && role == "user" && content.isNotBlank()) {
+            session.title = content.take(40).replace("\n", " ")
+        }
+    }
+
+    /** 更新当前会话最后一条消息内容（用于流式增量落盘） */
+    fun updateLastMessage(content: String) {
+        val session = getCurrentSession() ?: return
+        session.messages.lastOrNull()?.let {
+            it.content = content
+            session.updatedAt = System.currentTimeMillis()
+        }
     }
     
     fun getSessionById(id: String): ChatSession? {
